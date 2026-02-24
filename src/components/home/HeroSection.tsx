@@ -5,21 +5,19 @@ import Link from 'next/link';
 export function HeroSection() {
   return (
     <section className="relative w-full h-[85vh] bg-black overflow-hidden flex items-center">
-      {/* Background Image - Positioned Right to show faces */}
       <div 
         className="absolute inset-0 bg-no-repeat bg-right bg-cover md:bg-contain opacity-80"
         style={{ backgroundImage: "url('/hero-jagaban.jpg')" }}
       ></div>
 
-      {/* Dark Fade for Readability on Left */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/30 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
 
-      <div className="container mx-auto px-6 md:px-12 z-10 pt-32 md:pt-20"> {/* This pt-32 pushes it down without centering it */}
+      <div className="container mx-auto px-6 md:px-12 z-10 pt-32 md:pt-20">
         <motion.div 
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="max-w-2xl text-left" // Forced back to left-aligned
+          className="max-w-2xl text-left"
         >
           <span className="text-[#D97706] font-black tracking-[0.3em] uppercase text-[10px] mb-4 block">
             Unified Vision • One Zamfara
