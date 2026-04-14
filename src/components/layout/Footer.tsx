@@ -25,6 +25,7 @@ export const Footer = () => {
             <li><Link href="/" className="hover:text-[#D97706] transition-colors">Home</Link></li>
             <li><Link href="/about" className="hover:text-[#D97706] transition-colors">Hon. Kabiru Lawal</Link></li>
             <li><Link href="/projects" className="hover:text-[#D97706] transition-colors">Projects</Link></li>
+            <li><Link href="/network" className="hover:text-[#D97706] transition-colors">Our Network</Link></li>
             <li><Link href="/register" className="hover:text-[#D97706] transition-colors">Join Movement</Link></li>
           </ul>
         </div>
@@ -45,14 +46,23 @@ export const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright Bar */}
+      {/* Merged Copyright Bar & Staff Login */}
       <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="text-[10px] font-black tracking-widest text-gray-400 uppercase">
-          COPYRIGHT @ WONDER SIGHT X KLM 2026
-        </p>
-        <p className="text-[10px] font-black tracking-widest text-gray-500 italic uppercase">
-          BUILT BY WONDER SIGHT CREATIVES
-        </p>
+        <div className="flex flex-col gap-1">
+          <p className="text-[10px] font-black tracking-widest text-gray-400 uppercase">
+            COPYRIGHT @ KLM FOUNDATION 2026
+          </p>
+          <p className="text-[10px] font-black tracking-widest text-gray-500 italic uppercase">
+            BUILT BY WONDER SIGHT GALLERY
+          </p>
+        </div>
+
+        <Link 
+          href="/admin" 
+          className="text-[10px] text-gray-400 hover:text-[#D97706] uppercase tracking-[0.2em] font-black transition-all border border-white/10 px-4 py-2 rounded-lg"
+        >
+          SL
+        </Link>
       </div>
     </footer>
   );

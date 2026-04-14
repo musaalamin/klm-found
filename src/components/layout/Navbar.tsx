@@ -9,19 +9,15 @@ export const Navbar = () => (
         <span className="font-bold text-[#064E3B] tracking-tight">KLM FOUNDATION</span>
       </Link>
       
-      <div className="hidden md:flex gap-8 text-[10px] font-black text-gray-600 uppercase tracking-widest">
+      <div className="hidden md:flex gap-10 text-[10px] font-black text-gray-600 uppercase tracking-widest">
         <Link href="/" className="hover:text-[#D97706]">Home</Link>
         <Link href="/about" className="hover:text-[#D97706]">The Jagaban</Link>
         <Link href="/projects" className="hover:text-[#D97706]">Projects</Link>
         <Link href="/news" className="hover:text-[#D97706]">News</Link>
-        <Link href="/contact" className="hover:text-[#D97706]">Contact</Link> {/* ADDED THIS */}
+        <Link href="/network" className="hover:text-[#D97706]">Network</Link>
+        <Link href="/contact" className="hover:text-[#D97706]">Contact</Link>
       </div>
-
-      <Link href="/admin">
-        <button className="bg-[#064E3B] text-white px-6 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-[#043327] transition-all uppercase tracking-widest">
-          Admin Portal
-        </button>
-      </Link>
+      {/* Admin button removed from here */}
     </div>
   </nav>
 );
