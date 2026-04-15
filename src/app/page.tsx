@@ -1,13 +1,27 @@
 import { HeroSection } from "@/components/home/HeroSection";
+import { WelcomeModal } from "@/components/home/WelcomeModal";
+import { client } from "@/lib/sanity";
 
-export default function Home() {
+async function getHeroData() {
+  const query = `*[_type == "hero"][0]`; // Fetch the first hero document
+  return await client.fetch(query);
+}
+
+export default async function Home() {
+  const heroData = await getHeroData();
+
   return (
     <main className="min-h-screen bg-white">
-      {/* We no longer need Navbar here because it's in layout.tsx.
-          We no longer need the 'useState' toggles because Projects and 
-          Registration now have their own dedicated pages.
-      */}
-      <HeroSection />
+      <WelcomeModal /> 
+      
+      {/* If data exists, show dynamic hero, otherwise show a loader or fallback */}
+      {heroData ? (
+        <HeroSection data={heroData} />
+      ) : (
+        <div className="h-screen flex items-center justify-center font-black uppercase">
+          Initializing Foundation Portal...
+        </div>
+      )}
     </main>
   );
 }

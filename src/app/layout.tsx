@@ -7,7 +7,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="antialiased">
         <Navbar />
-        {children}
+        {/* This 'pt-28' (padding-top) pushes the entire website down 
+          so it starts below the fixed Navbar. 
+        */}
+        <div className="pt-28">
+          {children}
+        </div>
         <Footer />
       </body>
     </html>
