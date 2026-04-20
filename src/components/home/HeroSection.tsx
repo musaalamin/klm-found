@@ -5,8 +5,11 @@ import Link from "next/link";
 
 export const HeroSection = ({ data }: { data: any }) => {
   return (
-    <section className="relative h-screen w-full overflow-hidden flex items-center">
-      <div className="absolute inset-0 z-0">
+    // Changed z-index to a negative or zero value to ensure it never overlaps the Navbar
+    <section className="relative h-screen w-full overflow-hidden flex items-center z-0"> 
+      
+      {/* Background Image Container */}
+      <div className="absolute inset-0 -z-10"> {/* Set to -z-10 so it is the absolute bottom layer */}
         <img 
           src={urlFor(data.backgroundImage).url()} 
           alt="Hero"
@@ -23,29 +26,29 @@ export const HeroSection = ({ data }: { data: any }) => {
         >
           {/* The "Unified Vision" Tag */}
           <span className="inline-block bg-[#D97706] text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-[0.3em] mb-6">
-            {data.topTag}
+            {data?.topTag || "Unified Vision, One Zamfara"}
           </span>
 
           <h1 className="text-5xl md:text-8xl font-black uppercase italic leading-none mb-6">
-            {data.headline}
+            {data?.headline}
           </h1>
           
           <p className="text-sm md:text-base font-bold uppercase tracking-widest max-w-xl text-gray-300 mb-10 leading-relaxed">
-            {data.subheadline}
+            {data?.subheadline}
           </p>
 
           <div className="flex flex-wrap gap-4">
-            {/* Primary Button (Projects) */}
+            {/* Primary Button */}
             <Link href="/projects">
               <button className="bg-white text-[#064E3B] px-8 py-4 rounded-xl font-black uppercase tracking-[0.2em] text-xs hover:bg-[#D97706] hover:text-white transition-all">
-                {data.primaryCtaText}
+                {data?.primaryCtaText || "Explore Projects"}
               </button>
             </Link>
 
-            {/* Secondary Button (Register) */}
+            {/* Secondary Button */}
             <Link href="/register">
               <button className="border-2 border-white text-white px-8 py-4 rounded-xl font-black uppercase tracking-[0.2em] text-xs hover:bg-white hover:text-[#064E3B] transition-all">
-                {data.secondaryCtaText}
+                {data?.secondaryCtaText || "Join Movement"}
               </button>
             </Link>
           </div>
