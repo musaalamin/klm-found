@@ -27,6 +27,8 @@ export const Footer = () => {
             <li><Link href="/projects" className="hover:text-[#D97706] transition-colors">Projects</Link></li>
             <li><Link href="/network" className="hover:text-[#D97706] transition-colors">Our Network</Link></li>
             <li><Link href="/register" className="hover:text-[#D97706] transition-colors">Join Movement</Link></li>
+            {/* Added Privacy Policy to Quick Links */}
+            <li><Link href="/privacy" className="hover:text-[#D97706] transition-colors">Privacy Policy</Link></li>
           </ul>
         </div>
 
@@ -48,13 +50,19 @@ export const Footer = () => {
 
       {/* Merged Copyright Bar & Staff Login */}
       <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 text-center md:text-left">
           <p className="text-[10px] font-black tracking-widest text-gray-400 uppercase">
             COPYRIGHT @ KLM FOUNDATION 2026
           </p>
-          <p className="text-[10px] font-black tracking-widest text-gray-500 italic uppercase">
-            BUILT BY WONDER SIGHT GALLERY
-          </p>
+          <div className="flex gap-4 items-center justify-center md:justify-start">
+             <p className="text-[10px] font-black tracking-widest text-gray-500 italic uppercase">
+               BUILT BY WONDER SIGHT GALLERY
+             </p>
+             <span className="text-gray-700">|</span>
+             <Link href="/privacy" className="text-[10px] font-black tracking-widest text-gray-500 uppercase hover:text-[#D97706] transition-colors">
+               Privacy Policy
+             </Link>
+          </div>
         </div>
 
         <Link 
