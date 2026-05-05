@@ -1,6 +1,8 @@
 import { Navbar } from "@/components/layout/Navbar";
-import { client } from "@/lib/sanity";
-import Link from "next/link"; // Required for routing
+import { client, urlFor } from "@/lib/sanity"; 
+import { PortableText } from '@portabletext/react';
+import Image from 'next/image';
+import Link from "next/link";
 
 async function getNews() {
   // Sorting by publishedAt descending (newest first)
