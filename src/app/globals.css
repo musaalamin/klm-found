@@ -3,14 +3,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  /* Update the font variable to point to our new Jakarta font */
-  --font-jakarta: var(--font-jakarta);
+  /* FIX: Do not point the variable to itself. 
+     The actual value is injected by Next.js in layout.tsx */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  /* Replace Geist with Jakarta */
+  /* Use the variable name we defined in layout.tsx */
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -24,17 +24,42 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  /* Remove Arial/Helvetica and use the Jakarta class we set in layout.tsx */
+  /* Apply the Jakarta font as the primary choice */
   font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Optional: Clean up Google Translate appearance */
+/* --- GOOGLE TRANSLATE STYLING --- */
+
+/* Clean up the gadget container */
 .goog-te-gadget {
   font-family: var(--font-jakarta) !important;
+  color: transparent !important; /* Hides the "Powered by" text if desired */
 }
 
+/* Style the links inside the gadget */
+.goog-te-gadget a {
+  display: none !important; /* Hides the Google logo for a cleaner look */
+}
+
+/* Style the text labels within our footer container */
+#google_translate_element span {
+  color: #d1d5db !important; /* Light gray for the dark green footer */
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em;
+}
+
+/* Style the actual dropdown box */
 .goog-te-gadget-simple {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 6px 10px !important;
   border-radius: 8px !important;
-  padding: 8px !important;
-  border: 1px solid #e5e7eb !important;
+  cursor: pointer;
+}
+
+/* Ensure the dropdown arrow and text inside are light colored */
+.goog-te-menu-value span {
+  color: #ffffff !important;
 }

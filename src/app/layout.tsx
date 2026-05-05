@@ -13,7 +13,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "KLM Foundation |Jagaban Zamfara | Consolidating Legacy",
+  title: "KLM Foundation | Jagaban Zamfara | Consolidating Legacy",
   description: "Official platform of the KLM Foundation, fostering sustainable development and inclusive governance in Zamfara State.",
   keywords: [
     "KLM Foundation", "Daudalawal", "Zamfara", "Gusau", "Climate Action Nigeria", 
@@ -52,7 +52,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${jakarta.className} antialiased bg-white selection:bg-[#D97706] selection:text-white`}>
         
         {/* [6] Google Translate Widget - Floating at the bottom left */}
-        <div id="google_translate_element" className="fixed bottom-24 left-6 z-[6000] opacity-90 hover:opacity-100 transition-opacity" />
 
         <Navbar />
         
