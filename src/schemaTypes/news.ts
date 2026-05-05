@@ -3,7 +3,11 @@ export default {
   type: 'document',
   title: 'News Updates',
   fields: [
-    { name: 'title', type: 'string', title: 'Headline' },
+    { 
+      name: 'title', 
+      type: 'string', 
+      title: 'Headline' 
+    },
     { 
       name: 'publishedAt', 
       type: 'datetime', 
@@ -16,23 +20,22 @@ export default {
       title: 'Display Date Label', 
       description: 'e.g., MAY 2026' 
     },
-// Add this field to your existing news.ts fields array
-{
-  name: 'slug',
-  type: 'slug',
-  title: 'URL Slug',
-  options: {
-    source: 'title', // This auto-generates the slug from the headline
-    maxLength: 96,
-  },
-  validation: (Rule: any) => Rule.required(),
-},
+    {
+      name: 'slug',
+      type: 'slug',
+      title: 'URL Slug',
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
+      validation: (Rule: any) => Rule.required(),
+    },
     {
       name: 'content',
       title: 'News Content',
       type: 'array',
       of: [
-        { type: 'block' }, // This allows for regular paragraphs
+        { type: 'block' },
         { 
           type: 'image',
           options: { hotspot: true },

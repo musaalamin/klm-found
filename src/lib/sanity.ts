@@ -2,7 +2,7 @@ import { createClient } from "@next-sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 
 export const client = createClient({
-  projectId: "your_project_id", // Double check this matches your Sanity dashboard
+  projectId: "4goyjcfy", // Double check this matches your Sanity dashboard
   dataset: "production",
   apiVersion: "2024-01-01",
   useCdn: false,
