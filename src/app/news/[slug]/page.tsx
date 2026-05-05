@@ -21,14 +21,23 @@ const ptComponents = {
   },
 };
 
-// NOTICE: In Next.js 15, params is a Promise
 export default async function SingleNewsPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params; // This is the fix for Next.js 15
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
   
   const query = `*[_type == "news" && slug.current == $slug][0]`;
   const news = await client.fetch(query, { slug });
 
-  if (!news) return <div className="pt-40 text-center font-black uppercase">Official News Statement Not Found</div>;
+  if (!news) {
+    return (
+      <main className="min-h-screen bg-white">
+        <Navbar />
+        <div className="pt-40 text-center font-black uppercase text-[#064E3B]">
+          Official News Statement Not Found
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-white">
