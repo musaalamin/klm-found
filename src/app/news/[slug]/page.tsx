@@ -6,20 +6,20 @@ import Image from 'next/image';
 const ptComponents = {
   types: {
     image: ({ value }: any) => {
-      // 1. STRENGTHENED CHECK: If there is no asset reference, show nothing
-      if (!value || !value.asset || !value.asset._ref) {
-        console.error("Sanity Image missing asset reference:", value);
-        return null;
-      }
+      // Direct check for the asset reference
+      const imageUrl = value?.asset?._ref ? urlFor(value).url() : null;
+      
+      if (!imageUrl) return null;
 
       return (
-        <div className="my-10 relative w-full h-[300px] md:h-[600px] overflow-hidden rounded-3xl shadow-xl">
+        <div className="my-10 relative w-full h-[300px] md:h-[600px] overflow-hidden rounded-3xl shadow-xl bg-gray-100">
           <Image 
-            src={urlFor(value).url()} 
+            src={imageUrl} 
             alt={value.alt || "KLM Foundation News"} 
             fill
             className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 768px) 100vw, 1200px"
+            priority={false}
           />
         </div>
       );
@@ -28,10 +28,9 @@ const ptComponents = {
 };
 
 export default async function SingleNewsPage({ params }: { params: Promise<{ slug: string }> }) {
-  const resolvedParams = await params;
-  const slug = resolvedParams.slug;
+  const { slug } = await params;
   
-  // 2. UPDATED QUERY: We fetch the full asset data to ensure urlFor has what it needs
+  // This query explicitly asks for the image asset details
   const query = `*[_type == "news" && slug.current == $slug][0] {
     title,
     displayDate,
