@@ -3,48 +3,29 @@ export default {
   type: 'document',
   title: 'News Updates',
   fields: [
-    { 
-      name: 'title', 
-      type: 'string', 
-      title: 'Headline' 
-    },
-    { 
-      name: 'publishedAt', 
-      type: 'datetime', 
-      title: 'Publication Date',
-      description: 'The news will be sorted by this date (Newest first)'
-    },
-    { 
-      name: 'displayDate', 
-      type: 'string', 
-      title: 'Display Date Label', 
-      description: 'e.g., MAY 2026' 
-    },
+    { name: 'title', type: 'string', title: 'Headline' },
+    { name: 'publishedAt', type: 'datetime', title: 'Publication Date' },
+    { name: 'displayDate', type: 'string', title: 'Display Date Label' },
     {
       name: 'slug',
       type: 'slug',
       title: 'URL Slug',
-      options: {
-        source: 'title',
-        maxLength: 96,
-      },
+      options: { source: 'title', maxLength: 96 },
       validation: (Rule: any) => Rule.required(),
+    },
+    // NEW: Dedicated Gallery Field
+    {
+      name: 'gallery',
+      type: 'array',
+      title: 'Photo Gallery',
+      of: [{ type: 'image', options: { hotspot: true } }],
+      validation: (Rule: any) => Rule.max(6).error('Maximum 6 photos allowed'),
     },
     {
       name: 'content',
-      title: 'News Content',
+      title: 'News Writeup (Text Only)',
       type: 'array',
-      of: [
-        { type: 'block' },
-        { 
-          type: 'image',
-          options: { hotspot: true },
-          fields: [
-            { name: 'alt', type: 'string', title: 'Alt Text' }
-          ]
-        }
-      ],
-      description: 'Add paragraphs and up to 6 images here. You can drag them to reorder.'
+      of: [{ type: 'block' }], // We keep this simple - just text
     },
   ]
 }
