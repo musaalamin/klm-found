@@ -16,6 +16,17 @@ export default {
       title: 'Display Date Label', 
       description: 'e.g., MAY 2026' 
     },
+// Add this field to your existing news.ts fields array
+{
+  name: 'slug',
+  type: 'slug',
+  title: 'URL Slug',
+  options: {
+    source: 'title', // This auto-generates the slug from the headline
+    maxLength: 96,
+  },
+  validation: (Rule: any) => Rule.required(),
+},
     {
       name: 'content',
       title: 'News Content',

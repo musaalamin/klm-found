@@ -1,11 +1,11 @@
-import { createClient } from "next-sanity";
+import { createClient } from "@next-sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 
 export const client = createClient({
-  projectId: "4goyjcfy", // Find this at manage.sanity.io
+  projectId: "your_project_id", // Double check this matches your Sanity dashboard
   dataset: "production",
   apiVersion: "2024-01-01",
-  useCdn: false, // Set to false for the most up-to-date data
+  useCdn: false,
 });
 
 const builder = imageUrlBuilder(client);
