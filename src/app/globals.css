@@ -3,13 +3,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Update the font variable to point to our new Jakarta font */
+  --font-jakarta: var(--font-jakarta);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Replace Geist with Jakarta */
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +24,17 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Remove Arial/Helvetica and use the Jakarta class we set in layout.tsx */
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Optional: Clean up Google Translate appearance */
+.goog-te-gadget {
+  font-family: var(--font-jakarta) !important;
+}
+
+.goog-te-gadget-simple {
+  border-radius: 8px !important;
+  padding: 8px !important;
+  border: 1px solid #e5e7eb !important;
 }
