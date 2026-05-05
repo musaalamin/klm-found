@@ -1,69 +1,65 @@
 export const revalidate = 60; // Updates the page every 1 minute
 
+import { client } from "@/lib/sanity";
+import { PortableText } from '@portabletext/react';
 import { Navbar } from "@/components/layout/Navbar";
-import { client } from "@/lib/sanity"; 
-import Link from "next/link";
+import Image from 'next/image';
 
-async function getNews() {
-  // Only fetch published posts (hides drafts)
-  const query = `*[_type == "news" && !(_id in path("drafts.**"))] | order(publishedAt desc)`;
-  return await client.fetch(query);
-}
+export default async function SingleNewsPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  
+  // Notice we use asset->url to get the direct, raw link to fix the 400 error
+  const query = `*[_type == "news" && slug.current == $slug][0] {
+    title,
+    displayDate,
+    content,
+    "gallery": gallery[].asset->url 
+  }`;
+  
+  const news = await client.fetch(query, { slug });
 
-export default async function NewsPage() {
-  const newsItems = await getNews();
+  if (!news) return <div className="pt-40 text-center font-black">STATEMENT NOT FOUND</div>;
 
   return (
     <main className="min-h-screen bg-white">
       <Navbar />
-      <div className="pt-32 pb-20 px-6">
-        <div className="max-w-7xl mx-auto border-l-8 border-[#064E3B] pl-6 mb-16">
-          <h1 className="text-4xl md:text-6xl font-black text-[#064E3B] uppercase italic">Press & Media</h1>
-          <p className="text-gray-400 font-bold uppercase text-xs tracking-[0.2em] mt-2">Official Statements and Updates</p>
+      <article className="pt-40 pb-20 px-6 max-w-6xl mx-auto">
+        <div className="max-w-4xl">
+            <p className="text-[#D97706] font-black text-xs uppercase mb-4 tracking-[0.3em]">
+                {news.displayDate || "Official Update"}
+            </p>
+            <h1 className="text-5xl md:text-7xl font-black text-[#064E3B] uppercase italic leading-[0.9] mb-12">
+            {news.title}
+            </h1>
+
+            {/* TEXT WRITEUP */}
+            <div className="prose prose-xl max-w-none text-gray-800 font-medium leading-relaxed mb-20">
+            <PortableText value={news.content} />
+            </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto">
-          <div className="col-span-1 md:col-span-2 space-y-16">
-            {newsItems.length > 0 ? (
-              newsItems
-                .filter((item: any) => item.slug?.current) // STOPS BROKEN LINKS: Only shows items with a generated slug
-                .map((item: any) => (
-                  <article key={item._id} className="border-b border-gray-100 pb-12">
-                    <Link href={`/news/${item.slug.current}`} className="group block">
-                      <p className="text-[#D97706] font-black text-[10px] mb-2 uppercase tracking-widest">
-                        {item.displayDate || "Recent Update"}
-                      </p>
-                      <h2 className="text-2xl md:text-4xl font-black text-[#064E3B] uppercase italic group-hover:text-[#D97706] transition-all duration-300">
-                        {item.title}
-                      </h2>
-                      <div className="mt-6 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#064E3B]">
-                        Read More <span className="group-hover:translate-x-2 transition-transform">→</span>
-                      </div>
-                    </Link>
-                  </article>
-                ))
-            ) : (
-              <p className="text-gray-500 font-bold uppercase text-xs">No news updates available.</p>
-            )}
+        {/* CREATIVE GALLERY GRID (The Project Style) */}
+        {news.gallery && news.gallery.length > 0 && (
+          <div className="mt-20">
+            <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-10 border-b pb-4">
+                Field Evidence & Media ({news.gallery.length})
+            </h3>
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+              {news.gallery.map((imgUrl: string, index: number) => (
+                <div key={index} className="break-inside-avoid group relative overflow-hidden rounded-xl bg-gray-100">
+                  <img 
+                    src={imgUrl} 
+                    alt={`Media ${index + 1}`} 
+                    className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                </div>
+              ))}
+            </div>
           </div>
-          
-          <aside className="bg-gray-50 p-8 rounded-3xl h-fit border border-gray-100 hidden md:block">
-            <h3 className="text-sm font-black text-[#D97706] uppercase tracking-widest mb-6 border-b pb-2">Quick Browse</h3>
-            <ul className="space-y-4">
-              {newsItems
-                .filter((item: any) => item.slug?.current) // Also filter the sidebar
-                .slice(0, 6)
-                .map((item: any) => (
-                  <li key={item._id}>
-                    <Link href={`/news/${item.slug.current}`} className="text-[10px] font-black uppercase text-gray-500 hover:text-[#064E3B] leading-tight block">
-                      • {item.title}
-                    </Link>
-                  </li>
-                ))}
-            </ul>
-          </aside>
-        </div>
-      </div>
+        )}
+      </article>
     </main>
   );
 }
