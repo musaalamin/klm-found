@@ -1,14 +1,34 @@
 import { Navbar } from "@/components/layout/Navbar";
-import { client } from "@/lib/sanity"; // Import the sanity client
+import { client, urlFor } from "@/lib/sanity"; // Ensure urlFor is exported from your sanity lib
+import { PortableText } from '@portabletext/react';
+import Image from 'next/image';
 
-// 1. This function talks to Sanity to get your news items
 async function getNews() {
-  const query = `*[_type == "news"] | order(_createdAt desc)`;
+  // We sort by publishedAt descending so the newest is at the top
+  const query = `*[_type == "news"] | order(publishedAt desc)`;
   return await client.fetch(query);
 }
 
+// Custom components to handle images inside the news writeup
+const ptComponents = {
+  types: {
+    image: ({ value }: any) => {
+      if (!value?.asset?._ref) return null;
+      return (
+        <div className="my-8 relative w-full h-[300px] md:h-[500px]">
+          <Image
+            src={urlFor(value).url()}
+            alt={value.alt || 'KLM Foundation News'}
+            fill
+            className="object-cover rounded-2xl shadow-lg"
+          />
+        </div>
+      );
+    },
+  },
+};
+
 export default async function NewsPage() {
-  // 2. We fetch the news items before the page loads
   const newsItems = await getNews();
 
   return (
@@ -21,50 +41,36 @@ export default async function NewsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto">
-          <div className="col-span-1 md:col-span-2 space-y-12">
-            {/* 3. We map through the real news items from Sanity */}
+          <div className="col-span-1 md:col-span-2 space-y-24">
             {newsItems.length > 0 ? (
               newsItems.map((item: any) => (
-                <NewsPlaceholder 
-                  key={item._id} 
-                  title={item.title} 
-                  date={item.date} 
-                  content={item.content} 
-                />
+                <article key={item._id} className="border-b border-gray-100 pb-16">
+                  <p className="text-[#D97706] font-black text-[10px] mb-2">{item.displayDate || item.publishedAt}</p>
+                  <h2 className="text-3xl md:text-5xl font-black text-[#064E3B] uppercase italic mb-8">
+                    {item.title}
+                  </h2>
+                  <div className="prose prose-lg max-w-none text-gray-700 font-medium leading-relaxed">
+                    <PortableText value={item.content} components={ptComponents} />
+                  </div>
+                </article>
               ))
             ) : (
               <p className="text-gray-500 font-bold uppercase text-xs">No news updates available.</p>
             )}
           </div>
           
-          <aside className="bg-gray-50 p-8 rounded-3xl h-fit">
+          <aside className="bg-gray-50 p-8 rounded-3xl h-fit hidden md:block">
             <h3 className="text-sm font-black text-[#D97706] uppercase tracking-widest mb-6 border-b pb-2">Latest Bulletin</h3>
             <ul className="space-y-4 text-[10px] font-black uppercase text-gray-500">
-              {/* You can also map specific small alerts here if you create a schema for them */}
-              <li className="hover:text-[#064E3B] cursor-pointer">• 500 New Scholarships Announced</li>
-              <li className="hover:text-[#064E3B] cursor-pointer">• Strategic Planning Meeting with LGA Leaders</li>
+              {newsItems.slice(0, 5).map((item: any) => (
+                <li key={item._id} className="hover:text-[#064E3B] cursor-pointer leading-tight">
+                  • {item.title}
+                </li>
+              ))}
             </ul>
           </aside>
         </div>
       </div>
     </main>
-  );
-}
-
-// 4. Updated Placeholder to accept dynamic props
-function NewsPlaceholder({ title, date, content }: { title: string, date: string, content?: string }) {
-  return (
-    <div className="group cursor-pointer">
-      <p className="text-[#D97706] font-black text-[10px] mb-2">{date}</p>
-      <h2 className="text-2xl md:text-3xl font-black text-[#064E3B] uppercase italic group-hover:text-black transition-colors">
-        {title}
-      </h2>
-      {content && (
-        <p className="text-gray-600 mt-4 text-sm font-medium leading-relaxed max-w-xl">
-          {content}
-        </p>
-      )}
-      <div className="w-20 h-1 bg-[#064E3B] mt-4 group-hover:w-full transition-all duration-500"></div>
-    </div>
   );
 }
