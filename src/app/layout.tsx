@@ -3,9 +3,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CookieBanner } from "@/components/layout/CookieBanner";
 import { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google"; // [1] Import the new font
+import { Plus_Jakarta_Sans } from "next/font/google";
 
-// [2] Configure the font
 const jakarta = Plus_Jakarta_Sans({ 
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
@@ -21,9 +20,31 @@ export const metadata: Metadata = {
     "Anka", "Tsafe", "kabiru Jagaba"
   ],
   authors: [{ name: "Khaliferh Musa Al-Amin" }],
+  // --- OPEN GRAPH (Social Media Previews) ---
+  openGraph: {
+    title: "KLM Foundation | Consolidating Legacy",
+    description: "Fostering sustainable development and inclusive governance in Zamfara State.",
+    url: "https://www.klm-foundation.com",
+    siteName: "KLM Foundation",
+    images: [
+      {
+        url: "/og-branding.png", // Must exist in your /public folder
+        width: 1200,
+        height: 630,
+        alt: "KLM Foundation - Consolidating Legacy"
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "KLM Foundation | Jagaban Zamfara",
+    description: "Consolidating Legacy in Zamfara State.",
+    images: ["/og-branding.png"],
+  },
 };
 
-// [3] Move viewport here to satisfy Next.js 15+ build requirements
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -33,7 +54,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {/* [4] Google Translate Configuration Script */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -48,11 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" />
       </head>
-      {/* [5] Apply the font class to the body */}
       <body className={`${jakarta.className} antialiased bg-white selection:bg-[#D97706] selection:text-white`}>
-        
-        {/* [6] Google Translate Widget - Floating at the bottom left */}
-
         <Navbar />
         
         <div className="relative z-0 pt-28">
@@ -60,7 +76,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
         
         <CookieBanner />
-        
         <Footer />
       </body>
     </html>

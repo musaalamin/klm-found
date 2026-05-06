@@ -14,7 +14,7 @@ export default async function ContactPage() {
   // Fallback values if data hasn't been added to Sanity Studio yet
   const contactInfo = {
     phone: data?.phone || "+234 000 000 0000",
-    email: data?.email || "info@klm-foundation.org",
+    email: data?.email || "INFO@KLM-FOUNDATION.COM",
     address: data?.address || "Gusau, Zamfara State, Nigeria",
     mapUrl: data?.mapUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15545.485646197576!2d6.6543!3d12.17!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x11b980af459f33c9%3A0x633d7b43!2sGusau!5e0!3m2!1sen!2sng!4v1713200000000!5m2!1sen!2sng"
   };

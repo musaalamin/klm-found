@@ -45,14 +45,14 @@ export const Footer = () => {
         <div className="uppercase">
           <h4 className="text-[#D97706] font-black text-xs tracking-[0.3em] mb-6">Connect With Us</h4>
           <div className="flex gap-4">
-            <SocialIcon icon={<Facebook size={18}/>} link="#" />
+            <SocialIcon icon={<Facebook size={18}/>} link="https://web.facebook.com/people/Kabiru-Lawal/61588961027400/" />
             <SocialIcon icon={<Twitter size={18}/>} link="#" />
             <SocialIcon icon={<Instagram size={18}/>} link="#" />
             <SocialIcon icon={<Linkedin size={18}/>} link="#" />
           </div>
           <div className="mt-8 flex items-center gap-2 text-gray-300 text-[10px] font-bold">
             <Mail size={14} className="text-[#D97706]" />
-            <span>OFFICE@KLM-FOUNDATION.COM</span>
+            <span>INFO@KLM-FOUNDATION.COM</span>
           </div>
         </div>
       </div>
