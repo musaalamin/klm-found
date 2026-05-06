@@ -1,6 +1,22 @@
 "use client";
 import Link from 'next/link';
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Languages } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Mail, Languages } from 'lucide-react';
+
+// Since Lucide doesn't have TikTok, we create a simple custom component for it
+const TikTokIcon = ({ size = 18 }: { size?: number }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+  >
+    <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+  </svg>
+);
 
 export const Footer = () => {
   return (
@@ -23,7 +39,6 @@ export const Footer = () => {
               <Languages size={14} />
               <span className="text-[10px] font-black uppercase tracking-widest">Select Language</span>
             </div>
-            {/* The Widget now lives here safely */}
             <div id="google_translate_element" className="bg-white/5 p-2 rounded-lg inline-block overflow-hidden" />
           </div>
         </div>
@@ -48,7 +63,8 @@ export const Footer = () => {
             <SocialIcon icon={<Facebook size={18}/>} link="https://web.facebook.com/people/Kabiru-Lawal/61588961027400/" />
             <SocialIcon icon={<Twitter size={18}/>} link="#" />
             <SocialIcon icon={<Instagram size={18}/>} link="https://www.instagram.com/hon.kabirulawal?igsh=MW4xbDRpc2V3Y2cwaA%3D%3D&utm_source=qr" />
-            <SocialIcon icon={<Tiktok size={18}/>} link="https://www.tiktok.com/@hon_kabiru_lawal?_r=1&_t=ZS-968fmqkHhGm" />
+            {/* Updated to use the TikTokIcon we created above */}
+            <SocialIcon icon={<TikTokIcon size={18}/>} link="https://www.tiktok.com/@hon_kabiru_lawal?_r=1&_t=ZS-968fmqkHhGm" />
           </div>
           <div className="mt-8 flex items-center gap-2 text-gray-300 text-[10px] font-bold">
             <Mail size={14} className="text-[#D97706]" />
