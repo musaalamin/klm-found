@@ -14,11 +14,20 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "KLM Foundation | Jagaban Zamfara | Consolidating Legacy",
   description: "Official platform of the KLM Foundation, fostering sustainable development and inclusive governance in Zamfara State.",
+  
+  // ADD THIS SECTION HERE
+  icons: {
+    icon: "/icon.png", // This targets your public/icon.png
+    shortcut: "/icon.png",
+    apple: "/icon.png", // For users who bookmark on iPhone
+  },
+
   keywords: [
     "KLM Foundation", "Daudalawal", "Zamfara", "Gusau", "Climate Action Nigeria", 
     "wondersightgallery", "goverment", "maibiredi Tv", "Abdulaziz Yari", "APC ADC NDC", "marafa", 
     "Anka", "Tsafe", "kabiru Jagaba"
   ],
+  // ... rest of your code stays the same
   authors: [{ name: "Khaliferh Musa Al-Amin" }],
   // --- OPEN GRAPH (Social Media Previews) ---
   openGraph: {

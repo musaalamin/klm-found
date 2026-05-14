@@ -1,29 +1,51 @@
 export default {
   name: 'network',
+  title: 'Network / Subsidiaries',
   type: 'document',
-  title: 'Our Network',
   fields: [
     {
       name: 'name',
-      type: 'string',
       title: 'Organization Name',
-    },
-    {
-      name: 'role',
       type: 'string',
-      title: 'Your Role/Tag',
-      description: 'e.g., Founder, Partner, or Lead Developer',
+      validation: (Rule: any) => Rule.required(),
     },
     {
-      name: 'description',
+      name: 'category',
+      title: 'Network Category',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Youth Wing', value: 'youth' },
+          { title: 'Women Wing', value: 'women' },
+          { title: 'Elders Council', value: 'elders' },
+          { title: 'Technical Partners', value: 'partners' },
+        ],
+      },
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: 'logo',
+      title: 'Organization Logo',
+      type: 'image',
+      description: 'Upload a logo if available. If left empty, a default icon will be used.',
+      options: { hotspot: true },
+    },
+    {
+      name: 'bio',
+      title: 'Organization Bio / Description',
       type: 'text',
-      title: 'Description',
+      description: 'A brief overview of what this subsidiary does.',
     },
     {
-      name: 'icon',
-      type: 'string',
-      title: 'Icon Name',
-      description: 'Enter a Lucide icon name like: Globe, Camera, ShieldCheck, or Leaf',
+      name: 'videoUrl',
+      title: 'Video Link (YouTube/Facebook)',
+      type: 'url',
+    },
+    {
+      name: 'gallery',
+      title: 'Gallery Photos',
+      type: 'array',
+      of: [{ type: 'image', options: { hotspot: true } }],
     },
   ],
-}
+};
