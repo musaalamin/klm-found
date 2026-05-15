@@ -5,12 +5,18 @@ import { Menu, X, ChevronDown } from 'lucide-react';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  // NEW: States to handle mobile accordions
+  const [isProjectsOpen, setIsProjectsOpen] = useState(false);
+  const [isNetworkOpen, setIsNetworkOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
+      // Reset accordions when menu closes
+      setIsProjectsOpen(false);
+      setIsNetworkOpen(false);
     }
   }, [isOpen]);
 
@@ -49,25 +55,19 @@ export const Navbar = () => {
               <span className="font-bold text-[#064E3B] text-sm md:text-base tracking-tighter uppercase">KLM Foundation</span>
             </Link>
             
-            {/* DESKTOP MENU */}
+            {/* DESKTOP MENU (Remains the same) */}
             <div className="hidden md:flex gap-8 items-center text-[10px] font-black text-gray-600 uppercase tracking-widest">
               <Link href="/" className="hover:text-[#D97706] transition-colors">Home</Link>
               <Link href="/about" className="hover:text-[#D97706] transition-colors">The Jagaban</Link>
 
-              {/* PROJECTS DROPDOWN */}
               <div className="relative group py-2">
                 <button className="hover:text-[#D97706] transition-colors font-black uppercase tracking-widest text-[10px] flex items-center gap-1 cursor-default">
                   Projects <ChevronDown size={12} className="group-hover:rotate-180 transition-transform" />
                 </button>
-                
                 <div className="absolute left-0 top-full w-56 bg-white shadow-2xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 border border-gray-100 overflow-hidden z-[9999] translate-y-2 group-hover:translate-y-0">
                   <div className="p-2 grid grid-cols-1">
                     {projectCategories.map((item) => (
-                      <Link 
-                        key={item.slug} 
-                        href={`/projects/${item.slug}`}
-                        className="px-4 py-3 text-[10px] font-black uppercase tracking-widest text-[#064E3B] hover:bg-[#064E3B] hover:text-white rounded-lg transition-all"
-                      >
+                      <Link key={item.slug} href={`/projects/${item.slug}`} className="px-4 py-3 text-[10px] font-black uppercase tracking-widest text-[#064E3B] hover:bg-[#064E3B] hover:text-white rounded-lg transition-all">
                         {item.name}
                       </Link>
                     ))}
@@ -77,20 +77,14 @@ export const Navbar = () => {
 
               <Link href="/news" className="hover:text-[#D97706] transition-colors">News</Link>
 
-              {/* NETWORK DROPDOWN */}
               <div className="relative group py-2">
                 <button className="hover:text-[#D97706] transition-colors font-black uppercase tracking-widest text-[10px] flex items-center gap-1 cursor-default">
                   Network <ChevronDown size={12} className="group-hover:rotate-180 transition-transform" />
                 </button>
-                
                 <div className="absolute left-0 top-full w-56 bg-white shadow-2xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 border border-gray-100 overflow-hidden z-[9999] translate-y-2 group-hover:translate-y-0">
                   <div className="p-2 grid grid-cols-1">
                     {networkCategories.map((item) => (
-                      <Link 
-                        key={item.slug} 
-                        href={`/network/${item.slug}`}
-                        className="px-4 py-3 text-[10px] font-black uppercase tracking-widest text-[#064E3B] hover:bg-[#064E3B] hover:text-white rounded-lg transition-all"
-                      >
+                      <Link key={item.slug} href={`/network/${item.slug}`} className="px-4 py-3 text-[10px] font-black uppercase tracking-widest text-[#064E3B] hover:bg-[#064E3B] hover:text-white rounded-lg transition-all">
                         {item.name}
                       </Link>
                     ))}
@@ -116,42 +110,62 @@ export const Navbar = () => {
       {isOpen && (
         <div className="fixed inset-0 z-[4999] bg-white md:hidden flex flex-col p-8 pt-32 overflow-y-auto">
           <div className="flex flex-col gap-6">
-            <Link href="/" onClick={() => setIsOpen(false)} className="text-4xl font-black text-[#064E3B] uppercase border-b border-gray-100 pb-2">Home</Link>
-            <Link href="/about" onClick={() => setIsOpen(false)} className="text-4xl font-black text-[#064E3B] uppercase border-b border-gray-100 pb-2">The Jagaban</Link>
+            <Link href="/" onClick={() => setIsOpen(false)} className="text-4xl font-black text-[#064E3B] uppercase border-b border-gray-100 pb-2 text-left">Home</Link>
+            <Link href="/about" onClick={() => setIsOpen(false)} className="text-4xl font-black text-[#064E3B] uppercase border-b border-gray-100 pb-2 text-left">The Jagaban</Link>
             
-            {/* MOBILE PROJECTS LIST */}
-            <div className="flex flex-col gap-2">
-              <span className="text-[#D97706] text-xs font-black uppercase tracking-widest">Our Projects</span>
-              {projectCategories.map((item) => (
-                <Link 
-                  key={item.slug} 
-                  href={`/projects/${item.slug}`}
-                  onClick={() => setIsOpen(false)}
-                  className="text-2xl font-black text-[#064E3B] pl-4 uppercase italic"
-                >
-                  {item.name}
-                </Link>
-              ))}
+            {/* MOBILE PROJECTS ACCORDION */}
+            <div className="flex flex-col">
+              <button 
+                onClick={() => setIsProjectsOpen(!isProjectsOpen)}
+                className="flex items-center justify-between text-4xl font-black text-[#064E3B] uppercase border-b border-gray-100 pb-2 text-left"
+              >
+                Projects <ChevronDown size={24} className={`transition-transform duration-300 ${isProjectsOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              <div className={`overflow-hidden transition-all duration-300 ${isProjectsOpen ? 'max-h-[500px] py-4' : 'max-h-0'}`}>
+                <div className="flex flex-col gap-4 pl-4">
+                  {projectCategories.map((item) => (
+                    <Link 
+                      key={item.slug} 
+                      href={`/projects/${item.slug}`}
+                      onClick={() => setIsOpen(false)}
+                      className="text-2xl font-black text-[#D97706] uppercase italic"
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            <Link href="/news" onClick={() => setIsOpen(false)} className="text-4xl font-black text-[#064E3B] uppercase border-b border-gray-100 pb-2">News</Link>
+            <Link href="/news" onClick={() => setIsOpen(false)} className="text-4xl font-black text-[#064E3B] uppercase border-b border-gray-100 pb-2 text-left">News</Link>
 
-            {/* MOBILE NETWORK LIST */}
-            <div className="flex flex-col gap-2">
-              <span className="text-[#D97706] text-xs font-black uppercase tracking-widest">Network Wings</span>
-              {networkCategories.map((item) => (
-                <Link 
-                  key={item.slug} 
-                  href={`/network/${item.slug}`}
-                  onClick={() => setIsOpen(false)}
-                  className="text-2xl font-black text-[#064E3B] pl-4 uppercase italic"
-                >
-                  {item.name}
-                </Link>
-              ))}
+            {/* MOBILE NETWORK ACCORDION */}
+            <div className="flex flex-col">
+              <button 
+                onClick={() => setIsNetworkOpen(!isNetworkOpen)}
+                className="flex items-center justify-between text-4xl font-black text-[#064E3B] uppercase border-b border-gray-100 pb-2 text-left"
+              >
+                Network <ChevronDown size={24} className={`transition-transform duration-300 ${isNetworkOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              <div className={`overflow-hidden transition-all duration-300 ${isNetworkOpen ? 'max-h-[500px] py-4' : 'max-h-0'}`}>
+                <div className="flex flex-col gap-4 pl-4">
+                  {networkCategories.map((item) => (
+                    <Link 
+                      key={item.slug} 
+                      href={`/network/${item.slug}`}
+                      onClick={() => setIsOpen(false)}
+                      className="text-2xl font-black text-[#D97706] uppercase italic"
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            <Link href="/contact" onClick={() => setIsOpen(false)} className="text-4xl font-black text-[#064E3B] uppercase border-b border-gray-100 pb-2">Contact</Link>
+            <Link href="/contact" onClick={() => setIsOpen(false)} className="text-4xl font-black text-[#064E3B] uppercase border-b border-gray-100 pb-2 text-left">Contact</Link>
           </div>
         </div>
       )}
