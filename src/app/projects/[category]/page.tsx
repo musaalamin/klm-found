@@ -3,25 +3,33 @@ import Image from "next/image";
 import { urlFor } from "@/lib/sanity";
 import { PortableText } from "@portabletext/react"; // Important for the content field
 
-// Helper function to safely parse and extract YouTube Video IDs for iframes
+// Helper function to safely parse and extract YouTube Video IDs for iframes across all device formats
 function getYouTubeEmbedUrl(url: string) {
   if (!url) return '';
   
   let videoId = '';
   
-  // Handle standard watch links: youtube.com/watch?v=ID
-  if (url.includes('v=')) {
-    videoId = url.split('v=')[1]?.split('&')[0];
-  } 
-  // Handle short links: youtu.be/ID
-  else if (url.includes('youtu.be/')) {
-    videoId = url.split('youtu.be/')[1]?.split('?')[0];
-  } 
-  // Handle links already formatted as embed: youtube.com/embed/ID
-  else if (url.includes('/embed/')) {
-    videoId = url.split('/embed/')[1]?.split('?')[0];
+  try {
+    // Case 1: Standard URL (youtube.com/watch?v=ID), Shorts, or existing Embeds
+    if (url.includes('youtube.com')) {
+      if (url.includes('v=')) {
+        videoId = url.split('v=')[1]?.split('&')[0];
+      } else if (url.includes('/shorts/')) {
+        videoId = url.split('/shorts/')[1]?.split('?')[0];
+      } else if (url.includes('/embed/')) {
+        videoId = url.split('/embed/')[1]?.split('?')[0];
+      }
+    } 
+    // Case 2: Mobile / Short URL (youtu.be/ID)
+    else if (url.includes('youtu.be/')) {
+      videoId = url.split('youtu.be/')[1]?.split('?')[0];
+    }
+  } catch (error) {
+    console.error("Error parsing YouTube URL:", error);
   }
 
+  // If we extracted a valid ID, build a clean embed link. 
+  // If not, return the original URL as a fallback.
   return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
 }
 
