@@ -3,7 +3,29 @@ import Image from "next/image";
 import { urlFor } from "@/lib/sanity";
 import { PortableText } from "@portabletext/react"; // Important for the content field
 
-// FIX: Ensure the category is passed into the query parameters object
+// Helper function to safely parse and extract YouTube Video IDs for iframes
+function getYouTubeEmbedUrl(url: string) {
+  if (!url) return '';
+  
+  let videoId = '';
+  
+  // Handle standard watch links: youtube.com/watch?v=ID
+  if (url.includes('v=')) {
+    videoId = url.split('v=')[1]?.split('&')[0];
+  } 
+  // Handle short links: youtu.be/ID
+  else if (url.includes('youtu.be/')) {
+    videoId = url.split('youtu.be/')[1]?.split('?')[0];
+  } 
+  // Handle links already formatted as embed: youtube.com/embed/ID
+  else if (url.includes('/embed/')) {
+    videoId = url.split('/embed/')[1]?.split('?')[0];
+  }
+
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+}
+
+// Ensure the category is passed into the query parameters object
 async function getProjects(category: string) {
   const query = `*[_type == "project" && category == $category] | order(date desc) {
     title,
@@ -21,7 +43,7 @@ async function getProjects(category: string) {
   return await client.fetch(query, { category });
 }
 
-// FIX: Next.js 16 requires 'params' to be a Promise
+// Next.js dynamic routing component
 export default async function CategoryPage({ 
   params 
 }: { 
@@ -54,10 +76,12 @@ export default async function CategoryPage({
               {/* Media Section */}
               <div className="space-y-6">
                 {project.videoUrl ? (
-                  <div className="aspect-video rounded-2xl overflow-hidden shadow-xl">
-                    <iframe 
-                      className="w-full h-full"
-                      src={`https://www.youtube.com/embed/${project.videoUrl.split('v=')[1]}`}
+                  <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-lg bg-black">
+                    <iframe
+                      src={getYouTubeEmbedUrl(project.videoUrl)}
+                      title={project.title}
+                      className="absolute top-0 left-0 w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
                     ></iframe>
                   </div>
